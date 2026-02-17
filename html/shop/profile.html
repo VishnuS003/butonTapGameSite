@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Кабинет</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/profile.css">
+
+  <!-- QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+  <nav class="nav-center">
+    <a href="index.html" class="nav-link">
+      <img src="Image/homeicon.svg"> Главная
+    </a>
+    <a href="ecosystem.html" class="nav-link">
+      <img src="Image/ecosystemicon.png"> Экосистема
+    </a>
+    <a href="shop.html" class="nav-link">
+      <img src="Image/shopicon.png"> Магазины
+    </a>
+  </nav>
+
+  <div class="nav-right">
+    <a href="profile.html" class="profile-btn">
+      <img src="Image/myprofileicon.png" alt="Profile">
+    </a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- GATE -->
+  <section id="gate" class="card">
+    <div class="h1">Вход</div>
+    <div class="sub">
+      Сначала выбери кто ты. После авторизации откроется твой кабинет.
+    </div>
+
+    <div class="rolePick">
+      <button class="btn primary" id="btnPlayer">Я игрок (Telegram)</button>
+      <button class="btn" id="btnShop">Я магазин</button>
+    </div>
+
+    <div class="warn center">
+      В тг логин подтянется автоматически
+    </div>
+  </section>
+
+  <!-- PLAYER -->
+  <section id="playerCab" class="hidden"></section>
+
+  <!-- SHOP -->
+  <section id="shopCab" class="hidden"></section>
+
+</div>
+
+<!-- JS -->
+<script src="js/profile.js"></script>
+</body>
+</html>

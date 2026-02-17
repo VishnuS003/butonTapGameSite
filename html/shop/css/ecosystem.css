@@ -1,0 +1,293 @@
+@font-face {
+  font-family: 'FarCryCyr';
+  src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'FarCryCyr', Arial, sans-serif;
+}
+
+body {
+  background: #000;
+  color: #fff;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 60px;
+  position: relative;
+}
+
+.nav-center {
+  display: flex;
+  gap: 42px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+  position: relative;
+}
+
+.nav-link img {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 6px #9FA626);
+  transition: .3s;
+}
+
+.nav-link:hover img {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(90deg,#9FA626,#60813A);
+  transform: scaleX(0);
+  transition: .3s;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-right {
+  position: absolute;
+  right: 60px;
+}
+
+/* ================= PROFILE BUTTON ================= */
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(159,166,38,0.08);
+  border: 1px solid rgba(159,166,38,0.35);
+  transition: .3s;
+}
+
+.profile-btn img {
+  width: 22px;
+  filter: drop-shadow(0 0 6px #9FA626);
+}
+
+.profile-btn:hover {
+  background: rgba(159,166,38,0.18);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(159,166,38,.6);
+}
+
+/* ================= TITLE ================= */
+
+.ecosystem-title {
+  text-align: center;
+  margin: 40px 0 10px;
+}
+
+.ecosystem-title h1 {
+  font-size: 88px;
+  letter-spacing: 8px;
+  color: #9FA626;
+}
+
+/* ================= SPROUT ================= */
+
+.sprout {
+  position: relative;
+  width: 40px;
+  height: 120px;
+  margin: 10px auto 40px;
+}
+
+.sprout::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: #60813A;
+  border-radius: 50%;
+  transform: translateX(-50%) scale(0);
+  animation: seedPop .5s ease forwards;
+}
+
+.sprout::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg,#9FA626,#60813A);
+  transform: translateX(-50%);
+  animation: growStem 1.6s ease forwards;
+  animation-delay: .4s;
+}
+
+.leaf {
+  position: absolute;
+  top: 42px;
+  width: 14px;
+  height: 8px;
+  background: #9FA626;
+  opacity: 0;
+}
+
+.leaf.left {
+  left: 50%;
+  transform: translateX(-100%) rotate(-30deg);
+  border-radius: 0 100% 0 100%;
+  animation: leafGrow .5s ease forwards;
+  animation-delay: 1.4s;
+}
+
+.leaf.right {
+  left: 50%;
+  transform: rotate(30deg);
+  border-radius: 100% 0 100% 0;
+  animation: leafGrow .5s ease forwards;
+  animation-delay: 1.6s;
+}
+
+@keyframes seedPop {
+  to { transform: translateX(-50%) scale(1); }
+}
+@keyframes growStem {
+  to { height: 80px; }
+}
+@keyframes leafGrow {
+  to { opacity: 1; }
+}
+
+/* ================= MAP ================= */
+
+.map {
+  width: 900px;
+  margin: 0 auto 80px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0;
+}
+
+/* ================= CARDS ================= */
+
+.card {
+  width: 420px;
+  padding: 22px 26px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-text { flex: 1; }
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: 18px;
+  background: linear-gradient(120deg,#9FA626,#60813A,#9FA626);
+  background-size: 300% 300%;
+  animation: borderFlow 6s ease infinite;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.icon-box {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-box img {
+  width: 40px;
+  filter: drop-shadow(0 0 6px rgba(159,166,38,.6));
+  transition: .35s;
+}
+
+.card:hover .icon-box img {
+  transform: scale(1.25) rotate(-8deg);
+  filter: drop-shadow(0 0 18px rgba(159,166,38,1));
+}
+
+.card-text h3 {
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.card-text p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+  .map {
+    width: 100%;
+    padding: 0 20px;
+  }
+  .row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .card {
+    width: 100%;
+  }
+  .ecosystem-title h1 {
+    font-size: 48px;
+  }
+}

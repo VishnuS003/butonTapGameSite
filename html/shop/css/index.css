@@ -1,0 +1,243 @@
+@font-face {
+  font-family: 'FarCryCyr';
+  src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'FarCryCyr', Arial, sans-serif;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 60px;
+  position: relative;
+}
+
+.nav-center {
+  display: flex;
+  gap: 42px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+  position: relative;
+}
+
+.nav-link img {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 6px #9FA626);
+  transition: .3s;
+}
+
+.nav-link:hover img {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(90deg,#9FA626,#60813A);
+  transform: scaleX(0);
+  transition: .3s;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-right {
+  position: absolute;
+  right: 60px;
+}
+
+/* ================= PROFILE BUTTON ================= */
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(159,166,38,0.08);
+  border: 1px solid rgba(159,166,38,0.35);
+  transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+
+.profile-btn img {
+  width: 22px;
+  filter: drop-shadow(0 0 6px #9FA626);
+}
+
+.profile-btn:hover {
+  background: rgba(159,166,38,0.18);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(159,166,38,.6);
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+  padding: 0 20px;
+}
+
+.title {
+  margin-top: -36px;
+  font-size: clamp(56px, 8vw, 96px);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.35),
+    0 0 30px rgba(255,255,255,.18);
+}
+
+.subtitle {
+  font-size: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  max-width: 1000px;
+  line-height: 1.35;
+  background: linear-gradient(90deg, #9FA626, #60813A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ================= BUTTONS ================= */
+
+.buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 28px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 46px;
+  min-width: 260px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.btn:hover {
+  background: rgba(255,255,255,.06);
+  animation: pulseSoft 1.2s ease-in-out infinite;
+}
+
+@keyframes pulseSoft {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .header {
+    padding: 18px 16px;
+  }
+
+  .nav-center {
+    gap: 26px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+
+  .nav-right {
+    right: 16px;
+    top: 16px;
+  }
+
+  .profile-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .profile-btn img {
+    width: 18px;
+  }
+
+  .title {
+    margin-top: -20px;
+    font-size: 48px;
+    letter-spacing: 4px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    letter-spacing: 2px;
+    max-width: 340px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 16px 0;
+  }
+
+  .footer {
+    font-size: 10px;
+  }
+}

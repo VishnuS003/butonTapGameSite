@@ -1,0 +1,215 @@
+@font-face {
+  font-family: 'FarCryCyr';
+  src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+}
+
+/* ================= BASE ================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'FarCryCyr', Arial, sans-serif;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.hidden { display: none; }
+a { color: inherit; text-decoration: none; }
+
+/* ================= HEADER (SAME AS MAIN) ================= */
+
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 60px;
+}
+
+.nav-center {
+  display: flex;
+  gap: 42px;
+  align-items: center;
+}
+
+/* links */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+  position: relative;
+}
+
+/* icons size = main page */
+.nav-link img {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 6px #9FA626);
+  transition: .3s;
+}
+
+.nav-link:hover img {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+/* underline */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(90deg, #9FA626, #60813A);
+  transform: scaleX(0);
+  transition: .3s;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ================= PROFILE ICON ================= */
+
+.nav-right {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(159,166,38,0.08);
+  border: 1px solid rgba(159,166,38,0.35);
+  transition:
+    background .3s ease,
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.profile-btn img {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 6px #9FA626);
+}
+
+.profile-btn:hover {
+  background: rgba(159,166,38,0.18);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(159,166,38,.6);
+}
+
+/* ================= LAYOUT ================= */
+
+.container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.card {
+  border: 1px solid rgba(159,166,38,.35);
+  border-radius: 24px;
+  padding: 34px;
+  background: rgba(255,255,255,.02);
+}
+
+.h1 {
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.sub {
+  opacity: .75;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.center { text-align: center; }
+
+/* ================= BUTTONS ================= */
+
+.rolePick {
+  margin-top: 28px;
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 16px 36px;
+  border-radius: 18px;
+  border: 1px solid #9FA626;
+  background: transparent;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.btn:hover {
+  background: rgba(159,166,38,.15);
+  transform: scale(1.05);
+}
+
+.btn.primary {
+  box-shadow: 0 0 16px rgba(159,166,38,.18);
+}
+
+/* ================= REUSABLE ================= */
+
+.warn {
+  opacity: .7;
+  font-size: 12px;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .header {
+    padding: 18px 16px;
+  }
+
+  .nav-center {
+    gap: 26px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+
+  .nav-right {
+    right: 16px;
+  }
+
+  .profile-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .profile-btn img {
+    width: 18px;
+    height: 18px;
+  }
+}

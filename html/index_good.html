@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>ButonTap</title>
+
+<style>
+:root {
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  --sar: env(safe-area-inset-right);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+#splash1 {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity .5s;
+}
+#splash1.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#splash1 img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+#splash1 .status {
+  color: #fff;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+#splash2 {
+  position: fixed;
+  inset: 0;
+  background: #0b0b0f;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#splash2.show {
+  display: flex;
+}
+
+.loader-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.12) 0%,
+    rgba(255,255,255,0.06) 30%,
+    rgba(255,255,255,0.0) 65%
+  );
+  filter: blur(18px);
+  animation: glowPulse 2.4s ease-in-out infinite;
+}
+
+.loader {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  animation: breathe 1.6s ease-in-out infinite;
+}
+
+.ring.outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.12);
+  border-top-color: rgba(255,255,255,0.95);
+  animation: spin 1.1s linear infinite;
+}
+
+.ring.inner {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.10);
+  border-bottom-color: rgba(255,255,255,0.7);
+  animation: spinReverse 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+#unity-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  transition: opacity .5s;
+  isolation: isolate;
+  z-index: 1;
+}
+#unity-container.ready {
+  opacity: 1;
+}
+
+#unity-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  background: #231F20;
+  display: block;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+#debug-btn {
+  position: fixed;
+  top: calc(10px + var(--sat, 0px));
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 0, 0, 0.7);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  z-index: 99999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  touch-action: manipulation;
+  pointer-events: auto;
+}
+
+#debug-panel {
+  position: fixed;
+  top: calc(70px + var(--sat, 0px));
+  left: 10px;
+  right: 10px;
+  max-height: 300px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  padding: 10px;
+  overflow-y: auto;
+  z-index: 99998;
+  display: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  pointer-events: auto;
+}
+
+#debug-panel.show {
+  display: block;
+}
+
+.log-line {
+  margin: 2px 0;
+  word-wrap: break-word;
+}
+.error { color: #f00; }
+.success { color: #0f0; }
+.warning { color: #ff0; }
+
+#error-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  font-family: system-ui;
+  z-index: 100000;
+}
+#error-screen.show {
+  display: flex;
+}
+</style>
+</head>
+
+<body>
+
+<div id="error-screen"></div>
+
+<div id="splash1">
+  <img src="logo.png" alt="ButonTap">
+  <div class="status" style="color:#0f0;">Загрузка...</div>
+</div>
+
+<div id="splash2">
+  <div class="loader-wrap">
+    <div class="glow"></div>
+    <div class="loader">
+      <div class="ring outer"></div>
+      <div class="ring inner"></div>
+    </div>
+  </div>
+</div>
+
+<div id="unity-container">
+  <canvas id="unity-canvas"></canvas>
+</div>
+
+<div id="debug-btn" ontouchstart="window.toggleDebug && window.toggleDebug()" onclick="window.toggleDebug && window.toggleDebug()">🐛</div>
+<div id="debug-panel"></div>
+
+<script>
+// ===== ПРОВЕРКА ЗАГРУЗКИ СКРИПТОВ =====
+const splashStatus = document.querySelector('#splash1 .status');
+
+function updateStatus(msg, color = '#0f0') {
+  if (splashStatus) {
+    splashStatus.textContent = msg;
+    splashStatus.style.color = color;
+  }
+  console.log(msg);
+}
+
+updateStatus('Загрузка Telegram SDK...');
+
+// Загрузка Telegram SDK
+const tgScript = document.createElement('script');
+tgScript.src = 'https://telegram.org/js/telegram-web-app.js';
+tgScript.onerror = function() {
+  showError(
+    '❌ Ошибка загрузки Telegram SDK',
+    'Не удалось загрузить telegram-web-app.js',
+    'Проверьте:\n1. Интернет-соединение\n2. Откройте приложение через Telegram'
+  );
+};
+tgScript.onload = function() {
+  updateStatus('Telegram SDK загружен ✓');
+  checkTelegramSDK();
+};
+document.head.appendChild(tgScript);
+
+function showError(title, message, instructions) {
+  const errorScreen = document.getElementById("error-screen");
+  errorScreen.innerHTML = `
+    <div>
+      <h2 style="color:#f00;margin-bottom:20px;font-size:24px">${title}</h2>
+      <p style="margin-bottom:15px;font-size:16px">${message}</p>
+      <p style="font-size:14px;color:#aaa;white-space:pre-line;margin-bottom:20px">${instructions}</p>
+      <button onclick="location.reload()" style="padding:12px 24px;font-size:16px;background:#ff0;border:none;border-radius:8px;cursor:pointer;color:#000;font-weight:bold;touch-action:manipulation">
+        Перезагрузить
+      </button>
+    </div>
+  `;
+  errorScreen.classList.add("show");
+}
+
+function checkTelegramSDK() {
+  const maxWait = 3000;
+  const startTime = Date.now();
+  
+  function check() {
+    if (window.Telegram && window.Telegram.WebApp) {
+      updateStatus('Telegram готов ✓');
+      loadUnityLoader();
+      return;
+    }
+    
+    if (Date.now() - startTime > maxWait) {
+      showError(
+        "⚠️ Ошибка загрузки Telegram",
+        "Приложение должно открываться внутри Telegram",
+        "Инструкция:\n1. Откройте Telegram\n2. Настройки → Данные → Очистить кэш\n3. Перезапустите Telegram\n4. Откройте приложение заново"
+      );
+      return;
+    }
+    
+    setTimeout(check, 100);
+  }
+  
+  check();
+}
+
+function loadUnityLoader() {
+  updateStatus('Загрузка Unity loader...');
+  
+  const unityScript = document.createElement('script');
+  const timestamp = Date.now();
+  unityScript.src = `Build/butontapgame39.loader.js?v=${timestamp}`;
+  
+  unityScript.onerror = function() {
+    updateStatus('Ошибка загрузки Unity loader', '#f00');
+    showError(
+      "❌ Ошибка загрузки Unity",
+      "Не удалось загрузить butontapgame39.loader.js",
+      "Возможные причины:\n1. Файл отсутствует на сервере\n2. Проблемы с путём\n3. Nginx неправильно настроен\n\nПроверьте консоль браузера (F12)"
+    );
+  };
+  
+  unityScript.onload = function() {
+    updateStatus('Unity loader загружен ✓');
+    
+    if (typeof createUnityInstance !== 'function') {
+      showError(
+        "❌ Unity loader загружен, но createUnityInstance не найден",
+        "Возможно файл повреждён или неправильной версии",
+        "Попробуйте:\n1. Очистить кэш браузера\n2. Пересобрать Unity проект\n3. Проверить целостность файлов"
+      );
+      return;
+    }
+    
+    updateStatus('Инициализация приложения...');
+    setTimeout(initApp, 300);
+  };
+  
+  document.head.appendChild(unityScript);
+}
+
+function initApp() {
+  let unityInstance = null;
+  let unityLoading = false;
+
+  const tg = window.Telegram.WebApp;
+  let platform = tg.platform || "unknown";
+  let isIOS = platform === "ios";
+  let isAndroid = platform === "android";
+
+  if (platform === "unknown") {
+    const ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua)) {
+      platform = "ios";
+      isIOS = true;
+    } else if (/Android/.test(ua)) {
+      platform = "android";
+      isAndroid = true;
+    }
+  }
+
+  console.log("🔍 Platform:", platform, "| iOS:", isIOS, "| Android:", isAndroid);
+
+  // ===== DEBUG PANEL =====
+  const debugPanel = document.getElementById("debug-panel");
+  const logs = [];
+
+  function log(msg, type = "info") {
+    const time = new Date().toTimeString().slice(0,8);
+    const emoji = type === "error" ? "❌" : type === "success" ? "✅" : type === "warning" ? "⚠️" : "ℹ️";
+    const line = `[${time}] ${emoji} ${msg}`;
+    console.log(line);
+
+    logs.push({ line, type });
+    debugPanel.innerHTML = logs.slice(-50).map(l =>
+      `<div class="log-line ${l.type}">${l.line}</div>`
+    ).join("");
+    debugPanel.scrollTop = debugPanel.scrollHeight;
+  }
+
+  window.toggleDebug = function() {
+    debugPanel.classList.toggle('show');
+  };
+
+  log("🚀 ButonTap starting", "success");
+  log("📱 Platform: " + platform);
+  log("🌐 UA: " + navigator.userAgent.slice(0, 80));
+  log("📏 Screen: " + window.innerWidth + "x" + window.innerHeight);
+
+  // ===== TELEGRAM INIT =====
+  function initTelegram() {
+    log("━━━ Telegram Init ━━━");
+    
+    try {
+      tg.ready();
+      tg.expand();
+      
+      if (isIOS) {
+        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#000000');
+        if (typeof tg.enableClosingConfirmation === 'function') tg.enableClosingConfirmation();
+        log("✅ iOS Telegram settings applied", "success");
+      }
+
+      const user = tg.initDataUnsafe?.user;
+      log("👤 User ID: " + (user?.id || "none"));
+
+      if (!user?.id) {
+        log("⚠️ No user ID", "warning");
+        return;
+      }
+
+      const payload = JSON.stringify({
+        id: user.id,
+        username: user.username || "Player",
+        first_name: user.first_name || "Player"
+      });
+
+      if (!unityInstance) {
+        log("⚠️ Unity not ready, retrying...", "warning");
+        setTimeout(initTelegram, 300);
+        return;
+      }
+
+      try {
+        unityInstance.SendMessage("TelegramBridge", "SetTelegramData", payload);
+        log("✅ Telegram data sent to Unity", "success");
+      } catch (e) {
+        log("❌ SendMessage failed: " + e.message, "error");
+      }
+    } catch (e) {
+      log("❌ Telegram error: " + e.message, "error");
+    }
+  }
+
+  // ===== UNITY CONFIG (ЕДИНЫЙ ДЛЯ ВСЕХ ПЛАТФОРМ) =====
+  const config = {
+    dataUrl: "Build/butontapgame39.data.unityweb?v=39",
+    frameworkUrl: "Build/butontapgame39.framework.js.unityweb?v=39",
+    codeUrl: "Build/butontapgame39.wasm.unityweb?v=39",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "Hakaki",
+    productName: "ButonTap",
+    productVersion: "1.0",
+    devicePixelRatio: 1,
+    matchWebGLToCanvasSize: true
+  };
+
+  log("⚙️ Unity config: unified (devicePixelRatio=1, matchWebGL=true)");
+
+  let loadAttempt = 0;
+  const maxAttempts = 2;
+
+  // ===== UNITY LOADER =====
+  function startUnity() {
+    if (unityInstance || unityLoading) {
+      log("⚠️ Unity already running/loading, skip", "warning");
+      return;
+    }
+
+    unityLoading = true;
+    log("━━━ Starting Unity ━━━");
+    loadAttempt++;
+    
+    const splash1 = document.getElementById("splash1");
+    const splash2 = document.getElementById("splash2");
+    const canvas = document.getElementById("unity-canvas");
+    
+    setTimeout(() => {
+      splash1.classList.add("hidden");
+      splash2.classList.add("show");
+      log("Loading Unity build... (attempt " + loadAttempt + "/" + maxAttempts + ")");
+    }, 1500);
+    
+    const unityStartDelay = isIOS ? 300 : 0;
+    
+    setTimeout(() => {
+      createUnityInstance(canvas, config, (progress) => {
+        const p = Math.round(progress * 100);
+        if (p % 10 === 0 || p > 95) {
+          log(`Loading: ${p}%`);
+        }
+      }).then(instance => {
+        unityInstance = instance;
+        unityLoading = false;
+        
+        log("━━━━━━━━━━━━━━━━━━━━━━━━━", "success");
+        log("✅ UNITY LOADED", "success");
+        log("━━━━━━━━━━━━━━━━━━━━━━━━━", "success");
+        
+        splash2.classList.remove("show");
+        document.getElementById("unity-container").classList.add("ready");
+        
+        const telegramDelay = isIOS ? 300 : 0;
+        
+        setTimeout(() => {
+          initTelegram();
+          log("✅ Unity Canvas ready (Unity handles size)");
+        }, telegramDelay);
+        
+      }).catch(err => {
+        unityLoading = false;
+        log("❌ UNITY ERROR: " + (err?.message || err || "Unknown error"), "error");
+        
+        if (err?.stack) {
+          log("Stack: " + err.stack.slice(0, 300), "error");
+        }
+        
+        log("━━━ Debug Info ━━━", "error");
+        log("Platform: " + platform, "error");
+        log("UserAgent: " + navigator.userAgent.slice(0, 100), "error");
+        log("Window size: " + window.innerWidth + "x" + window.innerHeight, "error");
+        log("DevicePixelRatio: " + window.devicePixelRatio, "error");
+        log("Attempt: " + loadAttempt + "/" + maxAttempts, "error");
+        
+        if (loadAttempt < maxAttempts) {
+          log("🔄 Retrying in 2 seconds...", "warning");
+          setTimeout(() => {
+            splash2.classList.remove("show");
+            splash1.classList.remove("hidden");
+            unityInstance = null;
+            startUnity();
+          }, 2000);
+          return;
+        }
+        
+        showError(
+          "❌ Ошибка загрузки Unity",
+          err?.message || "Неизвестная ошибка",
+          "Попробуйте:\n1. Telegram → Настройки → Очистить кэш\n2. Перезапустить Telegram\n3. Проверить интернет-соединение"
+        );
+      });
+    }, unityStartDelay);
+  }
+
+  // ===== PAYMENT =====
+  window.OpenPayment = function(url) {
+    log("═══════════════════════════════════════", "warning");
+    log("🎯 OpenPayment CALLED", "success");
+    log("═══════════════════════════════════════", "warning");
+    
+    if (!url) {
+      log("❌ Empty URL", "error");
+      return;
+    }
+
+    log("📍 URL: " + url.slice(0, 120));
+    log("📍 Platform: " + platform);
+
+    try {
+      if (isIOS) {
+        log("🍎 iOS detected → using openLink");
+        
+        if (url.includes("t.me/CryptoBot/app?startapp=invoice")) {
+          log("⚠️ Got mini_app_invoice_url, need bot_invoice_url", "warning");
+          
+          const match = url.match(/invoice-([^&]+)/);
+          if (match && match[1]) {
+            const hash = match[1];
+            const fixedUrl = `https://t.me/CryptoBot?start=${hash}`;
+            log("🔧 Converted to bot_invoice_url: " + fixedUrl, "warning");
+            url = fixedUrl;
+          }
+        }
+        
+        tg.openLink(url);
+        log("✅ iOS → openLink called", "success");
+        return;
+      }
+
+      if (isAndroid) {
+        log("🤖 Android detected");
+        
+        const isWebAppInvoice = url.startsWith("https://app.cr.bot/invoices/");
+        const canOpenInvoice = typeof tg.openInvoice === 'function';
+        
+        log("   - web_app_invoice: " + isWebAppInvoice);
+        log("   - openInvoice available: " + canOpenInvoice);
+        
+        if (isWebAppInvoice && canOpenInvoice) {
+          log("🚀 Android → openInvoice");
+          
+          tg.openInvoice(url, function(status) {
+            log("💰 Invoice: " + status, status === "paid" ? "success" : "warning");
+            
+            if (status === "paid" && unityInstance) {
+              try {
+                unityInstance.SendMessage("GameManager", "OnPaymentSuccess");
+                log("✅ Unity notified", "success");
+              } catch (e) {
+                log("⚠️ Unity notify failed", "warning");
+              }
+            }
+          });
+          
+          log("✅ Android → openInvoice called", "success");
+          return;
+        }
+        
+        log("⚠️ Using openLink fallback", "warning");
+        tg.openLink(url);
+        log("✅ Android → openLink called", "success");
+        return;
+      }
+
+      log("⚠️ Unknown platform, using openLink", "warning");
+      tg.openLink(url);
+      log("✅ openLink called", "success");
+      
+    } catch (error) {
+      log("❌ Payment error: " + error.message, "error");
+      try {
+        window.open(url, "_blank");
+      } catch (e) {
+        log("❌ Fallback failed", "error");
+      }
+    }
+  };
+
+  window.OpenPaymentUrl = window.OpenPayment;
+  window.openPaymentUrl = window.OpenPayment;
+  window.OpenTelegramLink = window.OpenPayment;
+  window.OpenTelegramInvoice = window.OpenPayment;
+
+  // ===== iOS HANDLERS =====
+  if (isIOS) {
+    document.addEventListener('touchmove', function(e) {
+      if (e.target.closest('#unity-canvas') || 
+          e.target.closest('#debug-panel') ||
+          e.target.closest('#debug-btn')) {
+        return;
+      }
+      e.preventDefault();
+    }, { passive: false });
+    
+    log("✅ iOS touch handlers ready");
+  }
+
+  document.addEventListener('contextmenu', function(e) {
+    if (e.target.closest('#unity-canvas')) {
+      e.preventDefault();
+    }
+  }, false);
+
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(e) {
+    if (e.target.closest('#unity-canvas')) return;
+    
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+
+  log("✅ All systems ready", "success");
+  log("⏱️ Unity start scheduled");
+
+  startUnity();
+}
+</script>
+
+</body>
+</html>

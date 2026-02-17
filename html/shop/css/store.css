@@ -1,0 +1,246 @@
+@font-face {
+  font-family: 'FarCryCyr';
+  src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'FarCryCyr', Arial, sans-serif;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ================= HEADER (КАК НА ГЛАВНОЙ) ================= */
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 60px;
+  position: relative;
+}
+
+.nav-center {
+  display: flex;
+  gap: 42px;
+  align-items: center;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+  opacity: .9;
+  position: relative;
+}
+
+.nav-link img {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 6px #9FA626);
+  transition: .3s;
+}
+
+.nav-link:hover img {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(90deg, #9FA626, #60813A);
+  transform: scaleX(0);
+  transition: .3s;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* PROFILE ICON */
+.nav-right {
+  position: absolute;
+  right: 60px;
+}
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(159,166,38,0.08);
+  border: 1px solid rgba(159,166,38,0.35);
+  transition: .3s;
+}
+
+.profile-btn img {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 6px #9FA626);
+}
+
+.profile-btn:hover {
+  background: rgba(159,166,38,0.18);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(159,166,38,.6);
+}
+
+/* ================= LAYOUT ================= */
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.h1 {
+  font-size: 26px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.small {
+  opacity: .7;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* ================= GRID ================= */
+
+.grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+/* ================= CARD ================= */
+
+.card {
+  border: 1px solid rgba(159, 166, 38, .3);
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .02);
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.cardBody {
+  padding: 14px;
+}
+
+.name {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.priceRow {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.old {
+  text-decoration: line-through;
+  opacity: .55;
+}
+
+.new {
+  color: #9FA626;
+  font-size: 20px;
+}
+
+/* ================= BUTTONS ================= */
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid #9FA626;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.btn:hover {
+  background: rgba(159, 166, 38, .15);
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  border: 1px solid rgba(159, 166, 38, .35);
+  border-radius: 24px;
+  padding: 24px;
+  background: rgba(255, 255, 255, .02);
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #9FA626;
+  object-fit: cover;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+  .header {
+    padding: 18px 16px;
+  }
+
+  .nav-center {
+    gap: 26px;
+  }
+
+  .nav-right {
+    right: 16px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+}
