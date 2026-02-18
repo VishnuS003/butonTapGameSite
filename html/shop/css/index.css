@@ -1,8 +1,28 @@
 @font-face {
   font-family: 'FarCryCyr';
   src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
+:root{
+  --bg:#000;
+  --text:#fff;
+  --muted:#aaa;
+  --accent:#9FA626;
+  --accent2:#60813A;
+
+  --container: 1200px;
+
+  --header-h: 72px;
+  --gap-nav: 42px;
+
+  --btn-min: 240px;
+  --radius: 12px;
+
+  --shadow-accent: 0 0 18px rgba(159,166,38,.6);
+}
+
+/* База */
 * {
   margin: 0;
   padding: 0;
@@ -10,62 +30,91 @@
   font-family: 'FarCryCyr', Arial, sans-serif;
 }
 
+html{
+  /* важно: плавное поведение на мобилках */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
 body {
-  background: #000;
-  color: #fff;
-  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100svh; /* лучше, чем 100vh на мобилках */
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* ================= HEADER ================= */
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 22px 60px;
-  position: relative;
+  justify-content: center;
+
+  min-height: var(--header-h);
+  padding: 18px clamp(16px, 5vw, 60px);
+
+  /* легкий стеклянный эффект, чтобы на мобиле читалось */
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+
+  /* safe-area для айфонов с челкой */
+  padding-top: calc(18px + env(safe-area-inset-top));
 }
 
 .nav-center {
   display: flex;
-  gap: 42px;
+  gap: var(--gap-nav);
+  align-items: center;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #fff;
+
+  color: var(--text);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1px;
+
   font-size: 16px;
   position: relative;
+
+  /* нормальный тап-таргет на телефонах */
+  padding: 10px 8px;
+  border-radius: 10px;
 }
 
 .nav-link img {
   width: 18px;
   height: 18px;
-  filter: drop-shadow(0 0 6px #9FA626);
+  filter: drop-shadow(0 0 6px var(--accent));
   transition: .3s;
 }
 
 .nav-link:hover img {
-  transform: scale(1.2) rotate(-6deg);
+  transform: scale(1.15) rotate(-6deg);
 }
 
 .nav-link::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
+  left: 10px;
+  right: 10px;
+  bottom: 6px;
   height: 2px;
-  background: linear-gradient(90deg,#9FA626,#60813A);
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
   transform: scaleX(0);
   transition: .3s;
+  transform-origin: center;
 }
 
 .nav-link:hover::after {
@@ -74,18 +123,22 @@ body {
 
 .nav-right {
   position: absolute;
-  right: 60px;
+  right: clamp(16px, 5vw, 60px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* ================= PROFILE BUTTON ================= */
 
 .profile-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: rgba(159,166,38,0.08);
   border: 1px solid rgba(159,166,38,0.35);
   transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
@@ -93,13 +146,13 @@ body {
 
 .profile-btn img {
   width: 22px;
-  filter: drop-shadow(0 0 6px #9FA626);
+  filter: drop-shadow(0 0 6px var(--accent));
 }
 
 .profile-btn:hover {
   background: rgba(159,166,38,0.18);
-  transform: scale(1.08);
-  box-shadow: 0 0 18px rgba(159,166,38,.6);
+  transform: scale(1.06);
+  box-shadow: var(--shadow-accent);
 }
 
 /* ================= HERO ================= */
@@ -109,29 +162,45 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   align-items: center;
   text-align: center;
-  gap: 22px;
-  padding: 0 20px;
+
+  gap: 18px;
+  padding: clamp(24px, 5vw, 56px) 20px;
+
+  /* чтобы на очень высоких экранах не улетало в пустоту */
+  max-width: var(--container);
+  width: 100%;
+  margin: 0 auto;
+
+  /* чуть воздуха под хедером */
+  padding-top: clamp(24px, 4vw, 40px);
 }
 
 .title {
-  margin-top: -36px;
-  font-size: clamp(56px, 8vw, 96px);
-  letter-spacing: 6px;
+  margin-top: 0;
+
+  font-size: clamp(38px, 8vw, 96px);
+  letter-spacing: clamp(2px, 1.2vw, 6px);
   text-transform: uppercase;
+
   text-shadow:
     0 0 10px rgba(255,255,255,.35),
     0 0 30px rgba(255,255,255,.18);
+
+  line-height: 1.05;
 }
 
 .subtitle {
-  font-size: 20px;
-  letter-spacing: 4px;
+  font-size: clamp(12px, 2.4vw, 20px);
+  letter-spacing: clamp(1px, 1vw, 4px);
   text-transform: uppercase;
-  max-width: 1000px;
+
+  max-width: min(1000px, 92vw);
   line-height: 1.35;
-  background: linear-gradient(90deg, #9FA626, #60813A);
+
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -140,104 +209,157 @@ body {
 
 .buttons {
   display: flex;
-  gap: 40px;
-  margin-top: 28px;
+  gap: 18px;
+  margin-top: 22px;
   justify-content: center;
   flex-wrap: wrap;
+
+  width: 100%;
 }
 
 .btn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 18px 46px;
-  min-width: 260px;
-  border: 2px solid #fff;
-  border-radius: 12px;
-  color: #fff;
+
+  padding: 16px 22px;
+  min-width: min(var(--btn-min), 92vw);
+
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: var(--radius);
+
+  color: var(--text);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
+
   letter-spacing: 2px;
   text-transform: uppercase;
+
   background: transparent;
-  transition: background .2s ease, transform .2s ease;
+
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+  user-select: none;
+
+  /* нормальный тап */
+  min-height: 52px;
 }
 
 .btn:hover {
   background: rgba(255,255,255,.06);
+  box-shadow: 0 0 14px rgba(255,255,255,.12);
   animation: pulseSoft 1.2s ease-in-out infinite;
+}
+
+.btn:active{
+  transform: scale(0.98);
 }
 
 @keyframes pulseSoft {
   0% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  50% { transform: scale(1.03); }
   100% { transform: scale(1); }
 }
 
 /* ================= FOOTER ================= */
 
 .footer {
-  padding: 20px;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
   text-align: center;
-  font-size: 12px;
-  color: #aaa;
+  font-size: 11px;
+  color: var(--muted);
   letter-spacing: 1px;
   text-transform: uppercase;
+  border-top: 1px solid rgba(255,255,255,.06);
 }
 
-/* ================= MOBILE ================= */
+/* ================= MOBILE ADAPTATION ================= */
 
-@media (max-width: 768px) {
-  .header {
-    padding: 18px 16px;
+/* Планшеты и ниже */
+@media (max-width: 900px) {
+  :root{
+    --gap-nav: 18px;
+    --header-h: 64px;
   }
 
-  .nav-center {
-    gap: 26px;
-  }
-
-  .nav-link {
+  .nav-link{
     font-size: 14px;
+    gap: 8px;
+    letter-spacing: .8px;
   }
 
-  .nav-right {
-    right: 16px;
-    top: 16px;
+  .nav-link img{
+    width: 16px;
+    height: 16px;
   }
 
-  .profile-btn {
-    width: 34px;
-    height: 34px;
+  .profile-btn{
+    width: 38px;
+    height: 38px;
   }
-
-  .profile-btn img {
+  .profile-btn img{
     width: 18px;
   }
+}
 
-  .title {
-    margin-top: -20px;
-    font-size: 48px;
-    letter-spacing: 4px;
+/* Телефоны */
+@media (max-width: 600px) {
+  .header{
+    justify-content: flex-start;
   }
 
-  .subtitle {
-    font-size: 14px;
-    letter-spacing: 2px;
-    max-width: 340px;
+  /* центр-меню становится компактнее */
+  .nav-center{
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: calc(100% - 60px);
   }
 
-  .buttons {
+  .nav-link{
+    font-size: 12px;
+    padding: 10px 6px;
+  }
+
+  /* чтобы текст в меню не ломался ужасно */
+  .nav-link{
+    white-space: nowrap;
+  }
+
+  .hero{
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 14px;
+  }
+
+  .buttons{
     flex-direction: column;
-    gap: 18px;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
   }
 
-  .btn {
-    width: 100%;
-    max-width: 280px;
-    padding: 16px 0;
+  .btn{
+    width: min(420px, 92vw);
+    min-width: unset;
+    padding: 16px 14px;
+    font-size: 13px;
   }
+}
 
-  .footer {
-    font-size: 10px;
+/* Очень узкие экраны (iPhone SE / старые андроиды) */
+@media (max-width: 360px) {
+  .nav-link{
+    font-size: 11px;
   }
+  .title{
+    font-size: 34px;
+  }
+  .subtitle{
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}
+
+/* Поддержка “reduce motion” */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
