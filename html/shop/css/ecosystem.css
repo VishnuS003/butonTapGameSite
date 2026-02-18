@@ -13,6 +13,12 @@
 body {
   background: #000;
   color: #fff;
+
+  /* мобильная стабильность */
+  min-height: 100svh;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* ================= HEADER ================= */
@@ -40,6 +46,8 @@ body {
   letter-spacing: 1px;
   font-size: 16px;
   position: relative;
+  padding: 8px 10px;
+  border-radius: 10px;
 }
 
 .nav-link img {
@@ -56,12 +64,13 @@ body {
 .nav-link::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
   height: 2px;
   background: linear-gradient(90deg,#9FA626,#60813A);
   transform: scaleX(0);
+  transform-origin: center;
   transition: .3s;
 }
 
@@ -104,11 +113,12 @@ body {
 .ecosystem-title {
   text-align: center;
   margin: 40px 0 10px;
+  padding: 0 16px;
 }
 
 .ecosystem-title h1 {
-  font-size: 88px;
-  letter-spacing: 8px;
+  font-size: clamp(42px, 7.5vw, 88px);
+  letter-spacing: clamp(3px, 1.2vw, 8px);
   color: #9FA626;
 }
 
@@ -172,33 +182,29 @@ body {
   animation-delay: 1.6s;
 }
 
-@keyframes seedPop {
-  to { transform: translateX(-50%) scale(1); }
-}
-@keyframes growStem {
-  to { height: 80px; }
-}
-@keyframes leafGrow {
-  to { opacity: 1; }
-}
+@keyframes seedPop { to { transform: translateX(-50%) scale(1); } }
+@keyframes growStem { to { height: 80px; } }
+@keyframes leafGrow { to { opacity: 1; } }
 
 /* ================= MAP ================= */
 
 .map {
-  width: 900px;
+  width: min(900px, 100%);
   margin: 0 auto 80px;
+  padding: 0 20px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
+  gap: 32px;
   margin: 32px 0;
 }
 
 /* ================= CARDS ================= */
 
 .card {
-  width: 420px;
+  width: min(420px, 100%);
   padding: 22px 26px;
   border-radius: 18px;
   display: flex;
@@ -253,13 +259,13 @@ body {
 }
 
 .card-text h3 {
-  font-size: 18px;
+  font-size: clamp(15px, 2.2vw, 18px);
   letter-spacing: 2px;
   margin-bottom: 8px;
 }
 
 .card-text p {
-  font-size: 14px;
+  font-size: clamp(12.5px, 1.9vw, 14px);
   line-height: 1.5;
   color: #e0e0e0;
 }
@@ -271,23 +277,156 @@ body {
   font-size: 12px;
   color: #aaa;
   margin-bottom: 20px;
+  padding: 0 16px;
 }
 
-/* ================= MOBILE ================= */
+/* ================= RESPONSIVE ================= */
 
+/* планшеты/мобилки */
 @media (max-width: 900px) {
-  .map {
-    width: 100%;
-    padding: 0 20px;
+
+  .header {
+    padding: 16px 16px;
   }
+
+  .nav-center {
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: calc(100% - 70px);
+  }
+
+  .nav-link {
+    font-size: 14px;
+    gap: 8px;
+    padding: 10px 10px;
+  }
+
+  .nav-right {
+    right: 16px;
+    top: 16px;
+  }
+
+  .profile-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .profile-btn img {
+    width: 18px;
+  }
+
+  .sprout {
+    height: 105px;
+    margin: 8px auto 28px;
+  }
+
   .row {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    margin: 18px 0;
   }
+
   .card {
-    width: 100%;
+    padding: 18px 18px;
+    border-radius: 16px;
+    gap: 16px;
   }
+
+  .icon-box {
+    width: 52px;
+    height: 52px;
+  }
+
+  .icon-box img {
+    width: 36px;
+  }
+}
+
+/* телефоны */
+@media (max-width: 600px) {
+
+  /* липкий header + iPhone safe-area */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    padding-top: calc(12px + env(safe-area-inset-top));
+    padding-bottom: 12px;
+  }
+
+  .nav-center {
+    justify-content: flex-start;
+    max-width: calc(100% - 56px);
+    gap: 10px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    letter-spacing: .8px;
+    padding: 10px 8px;
+  }
+
+  .nav-link img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .nav-right {
+    right: 12px;
+    top: calc(10px + env(safe-area-inset-top));
+  }
+
+  .ecosystem-title {
+    margin: 22px 0 8px;
+  }
+
+  .sprout {
+    transform: scale(.92);
+    margin: 6px auto 22px;
+  }
+
+  .map {
+    padding: 0 14px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    padding: 16px 14px;
+  }
+
+  .card-text h3 {
+    letter-spacing: 1.2px;
+  }
+
+  .footer {
+    font-size: 11px;
+    margin-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+}
+
+/* очень маленькие экраны (типа iPhone SE) */
+@media (max-width: 380px) {
+
+  .nav-link {
+    font-size: 11px;
+    padding: 9px 7px;
+  }
+
   .ecosystem-title h1 {
-    font-size: 48px;
+    font-size: 38px;
+    letter-spacing: 3px;
+  }
+
+  .icon-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon-box img {
+    width: 32px;
   }
 }
