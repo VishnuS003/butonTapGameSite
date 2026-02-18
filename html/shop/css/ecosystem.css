@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'FarCryCyr';
   src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 * {
@@ -14,7 +15,6 @@ body {
   background: #000;
   color: #fff;
 
-  /* мобильная стабильность */
   min-height: 100svh;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
@@ -34,6 +34,7 @@ body {
 .nav-center {
   display: flex;
   gap: 42px;
+  align-items: center;
 }
 
 .nav-link {
@@ -46,8 +47,10 @@ body {
   letter-spacing: 1px;
   font-size: 16px;
   position: relative;
+
   padding: 8px 10px;
   border-radius: 10px;
+  white-space: nowrap;
 }
 
 .nav-link img {
@@ -94,7 +97,7 @@ body {
   justify-content: center;
   background: rgba(159,166,38,0.08);
   border: 1px solid rgba(159,166,38,0.35);
-  transition: .3s;
+  transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
 }
 
 .profile-btn img {
@@ -282,9 +285,7 @@ body {
 
 /* ================= RESPONSIVE ================= */
 
-/* планшеты/мобилки */
 @media (max-width: 900px) {
-
   .header {
     padding: 16px 16px;
   }
@@ -343,10 +344,7 @@ body {
   }
 }
 
-/* телефоны */
 @media (max-width: 600px) {
-
-  /* липкий header + iPhone safe-area */
   .header {
     position: sticky;
     top: 0;
@@ -354,6 +352,7 @@ body {
     background: rgba(0,0,0,.78);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,.06);
+
     padding-top: calc(12px + env(safe-area-inset-top));
     padding-bottom: 12px;
   }
@@ -408,9 +407,7 @@ body {
   }
 }
 
-/* очень маленькие экраны (типа iPhone SE) */
 @media (max-width: 380px) {
-
   .nav-link {
     font-size: 11px;
     padding: 9px 7px;
@@ -429,4 +426,8 @@ body {
   .icon-box img {
     width: 32px;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
