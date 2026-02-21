@@ -1,11 +1,16 @@
 /* ================= FONT ================= */
+/* Prefer woff2 -> woff -> ttf */
 @font-face {
   font-family: "FarCryCyr";
-  src: url("../fonts/farcry.ttf") format("truetype");
+  src:
+    url("../fonts/farcry.woff2") format("woff2"),
+    url("../fonts/farcry.woff") format("woff"),
+    url("../fonts/farcry.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+/* If you ONLY have TTF, remove the woff2/woff lines above and keep just the ttf line. */
 
 :root{
   --bg:#000;

@@ -1,14 +1,22 @@
+/* ================= FONT ================= */
+/* Prefer woff2 -> woff -> ttf */
 @font-face {
-  font-family: 'FarCryCyr';
-  src: url('../fonts/farcry.ttf') format('woff2');
+  font-family: "FarCryCyr";
+  src:
+    url("../fonts/farcry.woff2") format("woff2"),
+    url("../fonts/farcry.woff") format("woff"),
+    url("../fonts/farcry.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
+/* If you ONLY have TTF, keep just the last src line above. */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'FarCryCyr', Arial, sans-serif;
+  font-family: "FarCryCyr", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 body {
