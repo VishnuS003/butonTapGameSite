@@ -1,8 +1,27 @@
+/* ================= FONT ================= */
+/* Лучший вариант: woff2 -> woff -> ttf (на случай если нет конверта) */
+
 @font-face {
-  font-family: 'FarCryCyr';
-  src: url('../fonts/farcry.ttf') format('woff2');
+  font-family: "FarCryCyr";
+  src:
+    url("../fonts/farcry.woff2") format("woff2"),
+    url("../fonts/farcry.woff") format("woff"),
+    url("../fonts/farcry.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
+
+/* Если у тебя ТОЧНО только ttf, можешь заменить блок выше на этот:
+@font-face {
+  font-family: "FarCryCyr";
+  src: url("../fonts/farcry.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
 :root{
   --bg:#000;
   --text:#fff;
@@ -21,12 +40,11 @@
   --shadow-accent: 0 0 18px rgba(159,166,38,.6);
 }
 
-/* База */
+/* ================= BASE ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'FarCryCyr', Arial, sans-serif;
 }
 
 html{
@@ -42,10 +60,12 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+
+  /* Важно: шрифт назначаем на body (и он унаследуется) */
+  font-family: "FarCryCyr", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 /* ================= HEADER ================= */
-
 .header {
   position: sticky;
   top: 0;
@@ -60,6 +80,8 @@ body {
 
   background: rgba(0,0,0,.75);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
   border-bottom: 1px solid rgba(255,255,255,.06);
 
   padding-top: calc(18px + env(safe-area-inset-top));
@@ -92,7 +114,7 @@ body {
   width: 18px;
   height: 18px;
   filter: drop-shadow(0 0 6px var(--accent));
-  transition: .3s;
+  transition: transform .3s ease, filter .3s ease;
 }
 
 .nav-link:hover img {
@@ -106,9 +128,10 @@ body {
   right: 10px;
   bottom: 6px;
   height: 2px;
+
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   transform: scaleX(0);
-  transition: .3s;
+  transition: transform .3s ease;
   transform-origin: center;
 }
 
@@ -125,7 +148,6 @@ body {
 }
 
 /* ================= PROFILE BUTTON ================= */
-
 .profile-btn {
   width: 42px;
   height: 42px;
@@ -151,7 +173,6 @@ body {
 }
 
 /* ================= HERO ================= */
-
 .hero {
   flex: 1;
   display: flex;
@@ -199,7 +220,6 @@ body {
 }
 
 /* ================= BUTTONS ================= */
-
 .buttons {
   display: flex;
   gap: 18px;
@@ -253,7 +273,6 @@ body {
 }
 
 /* ================= FOOTER ================= */
-
 .footer {
   padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
   text-align: center;
@@ -264,8 +283,7 @@ body {
   border-top: 1px solid rgba(255,255,255,.06);
 }
 
-/* ================= MOBILE ADAPTATION ================= */
-
+/* ================= MOBILE ================= */
 @media (max-width: 900px) {
   :root{
     --gap-nav: 18px;
