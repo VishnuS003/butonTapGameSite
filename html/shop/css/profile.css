@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'FarCryCyr';
-  src: url('../fonts/FarCryCyr-Regular.ttf') format('truetype');
+  src: url('../fonts/farcry.ttf') format('woff2');
+  font-display: swap;
 }
 
 /* ================= BASE ================= */
