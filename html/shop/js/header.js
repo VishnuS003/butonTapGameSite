@@ -1,12 +1,26 @@
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("header.html")
-    .then(res => {
-      if (!res.ok) throw new Error("header.html not found");
-      return res.text();
+document.addEventListener("DOMContentLoaded", function () {
+  const mountPoint = document.getElementById("header");
+
+  if (!mountPoint) {
+    console.warn("Header mount point not found");
+    return;
+  }
+
+  // Определяем путь к header.html
+  // Если ты в html/shop/, то header.html лежит рядом
+  const headerPath = "header.html";
+
+  fetch(headerPath, { cache: "no-store" })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Failed to load header.html: " + response.status);
+      }
+      return response.text();
     })
-    .then(html => {
-      const mount = document.getElementById("header");
-      if (mount) mount.innerHTML = html;
+    .then(function (data) {
+      mountPoint.innerHTML = data;
     })
-    .catch(err => console.error(err));
+    .catch(function (error) {
+      console.error("Header load error:", error);
+    });
 });

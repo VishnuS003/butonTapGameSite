@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Главная</title>
 
-  <link rel="stylesheet" href="css/index.css">
+  <!-- cache-bust чтобы на сервере не висел старый css -->
+  <link rel="stylesheet" href="css/index.css?v=10" />
 </head>
 
 <body>
+  <!-- сюда header.js подгрузит header.html -->
+  <div id="header"></div>
 
-<div id="header"></div>
+  <main class="hero">
+    <h1 class="title">FARMCOIN</h1>
 
-<main class="hero">
-  <h1 class="title">FARMCOIN</h1>
+    <p class="subtitle">
+      УСПЕЙ ПОТРАТИТЬ СВОЮ ИГРОВУЮ ВАЛЮТУ ДО AIRDROP
+    </p>
 
-  <p class="subtitle">
-    УСПЕЙ ПОТРАТИТЬ СВОЮ ИГРОВУЮ ВАЛЮТУ ДО AIRDROP
-  </p>
+    <div class="buttons">
+      <a href="ecosystem.html" class="btn">УЗНАТЬ БОЛЬШЕ</a>
+      <a href="https://t.me/butontap_bot" target="_blank" rel="noopener" class="btn">ИГРАТЬ</a>
+    </div>
+  </main>
 
-  <div class="buttons">
-    <a href="ecosystem.html" class="btn">УЗНАТЬ БОЛЬШЕ</a>
-    <a href="https://t.me/butontap_bot" target="_blank" class="btn">ИГРАТЬ</a>
-  </div>
-</main>
+  <footer class="footer">
+    © 2026 BUTONTAP. ALL RIGHTS RESERVED.
+  </footer>
 
-<footer class="footer">
-  © 2026 BUTONTAP. ALL RIGHTS RESERVED.
-</footer>
-
-<script src="js/header.js"></script>
-<script src="js/index.js"></script>
+  <!-- важно: header.js должен выполниться раньше, чтобы вставить хедер -->
+  <script src="js/header.js?v=10"></script>
+  <script src="js/index.js?v=10"></script>
 </body>
 </html>
